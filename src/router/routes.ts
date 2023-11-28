@@ -1,25 +1,47 @@
-import Home from '@/views/Home.vue'
-import About from '@/views/About.vue'
-import Login from '@/views/Login.vue'
-import { Route, RouteTypeEnum } from '@/interface/route'
+import { RouteRecordRaw } from 'vue-router';
 
-export const routes: Route[] = [
+export enum Layout {
+    None = 0,
+    Default = 1
+}
+
+export const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        component: Home,
-        name: 'Home',
-        type: RouteTypeEnum.Link
+        redirect: '/login'
     },
     {
-        path: '/about',
-        component: About,
-        name: 'About',
-        type: RouteTypeEnum.Link
+        path: '/dashboard',
+        component: () => import("@/views/Home.vue"),
+        name: 'home',
+        meta: {
+            layout: Layout.Default,
+        }
     },
     {
         path: '/login',
-        component: Login,
-        name: 'Login',
-        type: RouteTypeEnum.Route
-    }
+        component: () => import("@/views/Login.vue"),
+        name: 'login',
+    },
+    {
+        path: '/tasks',
+        component: () => import("@/views/Tasks.vue"),
+        name: 'my tasks',
+        meta: {
+            layout: Layout.Default,
+        }
+    },
+    {
+        path: '/reports/manager',
+        component: () => import("@/views/reports/ManagerReports.vue"),
+        name: 'manager reports',
+        meta: {
+            layout: Layout.Default,
+        }
+    },
 ];
+declare module 'vue-router' {
+    interface RouteMeta {
+        layout?: Layout
+    }
+  }

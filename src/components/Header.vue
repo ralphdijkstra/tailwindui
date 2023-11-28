@@ -1,95 +1,58 @@
 <template>
-    <header class="bg-white">
-      <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div class="flex lg:flex-1">
-          <router-link to="/" class="-m-1.5 p-1.5">
-            <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-          </router-link>
-        </div>
-        <div class="flex lg:hidden">
-          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
-            <span class="sr-only">Open main menu</span>
+      <div class="sticky top-0 z-40">
+        <div class="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm px-6 lg:px-0 lg:shadow-none">
+          <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="emit('changeSidebarState', true)">
+            <span class="sr-only">Open sidebar</span>
             <Bars3Icon class="h-6 w-6" aria-hidden="true" />
           </button>
-        </div>
-        <div class="hidden lg:flex lg:gap-x-12">
-            <template v-for="link in navLinks">
-                <router-link :to="link.path" class="text-sm font-semibold leading-6 text-gray-900">{{ link.name }}</router-link>
-            </template>
-        </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <PopoverGroup class="hidden lg:flex lg:gap-x-12">
-              <Popover class="relative">
-                <PopoverButton class="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                  Login
-                  <ChevronDownIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                </PopoverButton>
 
-                <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
-                  <PopoverPanel class="absolute -left-48 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                    <div class="p-4">
-                      <Login/>
-                    </div>
-                  </PopoverPanel>
+          <!-- Separator -->
+          <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
+
+          <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end px-4">
+            <div class="flex items-center gap-x-4 lg:gap-x-6">
+              <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                <span class="sr-only">Settings</span>
+                <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+              </button>
+              <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                <span class="sr-only">View notifications</span>
+                <BellIcon class="h-6 w-6" aria-hidden="true" />
+              </button>
+              <!-- Profile dropdown -->
+              <Menu as="div" class="relative">
+                <MenuButton class="-m-1.5 flex items-center p-1.5">
+                  <span class="sr-only">Open user menu</span>
+                  <img class="h-12 w-12 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                </MenuButton>
+                <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                  <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                      <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
+                    </MenuItem>
+                  </MenuItems>
                 </transition>
-              </Popover>
-            </PopoverGroup>
-        </div>
-      </nav>
-      <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
-        <div class="fixed inset-0 z-10" />
-        <DialogPanel class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div class="flex items-center justify-between">
-            <a href="#" class="-m-1.5 p-1.5">
-              <span class="sr-only">Your Company</span>
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-            </a>
-            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
-              <span class="sr-only">Close menu</span>
-              <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="mt-6 flow-root">
-            <div class="-my-6 divide-y divide-gray-500/10">
-              <div class="space-y-2 py-6">
-            <template v-for="link in navLinks">
-                <router-link :to="link.path" class="text-sm font-semibold leading-6 text-gray-900">{{ link.name }}</router-link>
-            </template>
-              </div>
-              <div class="py-6">
-                <router-link to="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</router-link>
-              </div>
+              </Menu>
             </div>
           </div>
-        </DialogPanel>
-      </Dialog>
-    </header>
+        </div>
+      </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import {
-  Dialog,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from '@headlessui/vue'
-import {
-  Bars3Icon,
-  ChevronDownIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
+import { Menu, MenuButton, MenuItem, MenuItems, } from '@headlessui/vue'
+import { Bars3Icon, BellIcon, Cog6ToothIcon, } from '@heroicons/vue/24/outline'
 
-import { routes } from '@/router/routes.ts'
-import { RouteTypeEnum } from '@/interface/route';
-import Login from '@/views/Login.vue';
+const emit = defineEmits(['changeSidebarState'])
 
-const navLinks = computed(() => {
-  return routes.filter(x => x.type == RouteTypeEnum.Link);
-})
-
-const mobileMenuOpen = ref(false)
+const userNavigation = [
+  { 
+    name: 'Your profile', 
+    href: '#' 
+  },
+  { 
+    name: 'Sign out', 
+    href: '#' 
+  },
+];
 </script>
