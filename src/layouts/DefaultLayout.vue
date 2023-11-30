@@ -4,12 +4,12 @@
       :sidebar-open="sidebarOpen"
       @change-sidebar-state="changeSidebarState"
     />
-      <div class="lg:pl-72">
+      <div class="xl:pl-72">
         <Header
         @change-sidebar-state="changeSidebarState"
         />
 
-      <main class="py-10">
+      <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-7">
           <slot></slot>
       </main>
     </div>

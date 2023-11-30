@@ -1,6 +1,5 @@
 <template>
-    <div class="grid grid-cols-12">
-    <div class="col-start-3 col-end-9 shadow-xl rounded-md text-center py-10 px-5">
+    <div class="shadow-xl rounded-md text-center p-5 max-w-md border">
           <div class="flex items-center text-gray-900 pb-3 border-b border-gray-200">
             <button type="button" class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
               <span class="sr-only">Previous month</span>
@@ -17,7 +16,7 @@
             <div>Last month</div>
             <div>Last year</div>
           </div>
-          <div class="grid grid-cols-7 text-sm leading-6">
+          <div class="grid grid-cols-7 text-sm">
             <div>Mo</div>
             <div>Tu</div>
             <div>We</div>
@@ -27,12 +26,11 @@
             <div>Su</div>
           </div>
           <div class="isolate mt-2 grid grid-cols-7 gap-px text-sm">
-            <button v-for="(day, dayIdx) in days" :key="day.date" type="button" :class="['py-1.5 focus:z-10 group', day.isCurrentMonth ? 'text-gray-800' : 'text-gray-400', (day.isSelected || day.isToday) && 'font-semibold', day.isSelected && 'text-white', !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900', !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400', day.isToday && !day.isSelected && 'text-purple-600']">
-              <time :datetime="day.date" :class="['mx-auto flex h-9 w-9 items-center justify-center rounded-full group-hover:bg-gray-50', day.isSelected && day.isToday && 'bg-purple-600', day.isSelected && !day.isToday && 'bg-purple-600']">{{ day.date.split('-').pop().replace(/^0/, '') }}</time>
+            <button v-for="day in days" :key="day.date" type="button" :class="['py-1.5 focus:z-10 group', day.isCurrentMonth ? 'text-gray-800' : 'text-gray-400', (day.isSelected || day.isToday) && 'font-semibold', day.isSelected && 'text-white', !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900', !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400', day.isToday && !day.isSelected && 'text-purple-600']">
+              <time :datetime="day.date" :class="['mx-auto flex h-9 w-9 items-center justify-center rounded-full', day.isSelected ? 'bg-purple-600' : 'group-hover:bg-gray-50']">{{ day.date.split('-').pop()?.replace(/^0/, '') }}</time>
             </button>
           </div>
         </div>
-    </div>
   </template>
   
   <script setup lang=ts>

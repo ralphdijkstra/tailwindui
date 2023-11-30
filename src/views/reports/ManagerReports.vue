@@ -1,45 +1,43 @@
 <template>
-  <div class="max-w-7xl px-6 lg:px-8">
-    <div class="max-w-2xl lg:mx-0 mb-6">
-      <h2 class="font-bold tracking-tight text-gray-900 text-4xl">Manager reports</h2>
-      <p class="text-lg leading-8 text-gray-600">View individual manager progress.</p>
-    </div>
-  <Listbox as="div" v-model="selected">
-    <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900">Studio Manager</ListboxLabel>
-    <div class="relative max-w-lg">
-      <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-sm sm:leading-6">
-        <span class="flex items-center gap-x-2">
-          <img :src="selected.avatar" alt="" class="h-6 w-6 flex-shrink-0 rounded-full" />
-          <span class="font-bold block truncate">{{ selected.name }}</span>
-          <span>-</span>
-          <span class="font-normal block truncate">{{ selected.location }}</span>
-        </span>
-        <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-          <ChevronDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-        </span>
-      </ListboxButton>
-
-      <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-        <ListboxOptions class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-          <ListboxOption as="template" v-for="person in people" :key="person.id" :value="person" v-slot="{ active, selected }">
-            <li :class="[active ? 'bg-gray-50' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-              <div class="flex items-center gap-x-2">
-                <img :src="person.avatar" alt="" class="h-5 w-5 flex-shrink-0 rounded-full" />
-                <span class="font-bold block truncate">{{ person.name }}</span>
-                <span class="text-xl font-bold">&#183;</span>
-                <span class="font-normal block truncate">{{ person.location }}</span>
-              </div>
-
-              <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-4">
-                <CheckIcon class="h-5 w-5" aria-hidden="true" />
-              </span>
-            </li>
-          </ListboxOption>
-        </ListboxOptions>
-      </transition>
-    </div>
-  </Listbox>
+  <div class="max-w-2xl lg:mx-0 mb-6">
+    <h2 class="font-bold tracking-tight text-gray-900 text-4xl">Manager reports</h2>
+    <p class="text-lg leading-8 text-gray-600">View individual manager progress.</p>
   </div>
+<Listbox as="div" v-model="selected">
+  <ListboxLabel class="block text-sm font-medium text-gray-900">Studio Manager</ListboxLabel>
+  <div class="relative max-w-lg">
+    <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-sm">
+      <span class="flex items-center gap-x-2">
+        <img :src="selected.avatar" alt="" class="h-6 w-6 flex-shrink-0 rounded-full" />
+        <span class="font-bold block truncate">{{ selected.name }}</span>
+        <span>-</span>
+        <span class="font-medium block truncate">{{ selected.location }}</span>
+      </span>
+      <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+        <ChevronDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+      </span>
+    </ListboxButton>
+
+    <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+      <ListboxOptions class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <ListboxOption as="template" v-for="person in people" :key="person.id" :value="person" v-slot="{ active, selected }">
+          <li :class="[active ? 'bg-gray-50' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+            <div class="flex items-center gap-x-2">
+              <img :src="person.avatar" alt="" class="h-5 w-5 flex-shrink-0 rounded-full" />
+              <span class="font-bold block truncate">{{ person.name }}</span>
+              <span class="text-xl font-bold">&#183;</span>
+              <span class="font-medium block truncate">{{ person.location }}</span>
+            </div>
+
+            <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-4">
+              <CheckIcon class="h-5 w-5" aria-hidden="true" />
+            </span>
+          </li>
+        </ListboxOption>
+      </ListboxOptions>
+    </transition>
+  </div>
+</Listbox>
 </template>
 
 <script setup lang="ts">

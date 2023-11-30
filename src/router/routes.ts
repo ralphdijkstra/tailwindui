@@ -13,7 +13,7 @@ export const routes: RouteRecordRaw[] = [
     {
         path: '/dashboard',
         component: () => import("@/views/Home.vue"),
-        name: 'home',
+        name: 'dashboard',
         meta: {
             layout: Layout.Default,
         }
@@ -25,7 +25,7 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         path: '/tasks',
-        component: () => import("@/views/Tasks.vue"),
+        component: () => import("@/views/Tasks2Layout.vue"),
         name: 'my tasks',
         meta: {
             layout: Layout.Default,

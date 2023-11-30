@@ -1,6 +1,6 @@
 <template>
 <TransitionRoot as="template" :show="sidebarOpen">
-      <Dialog as="div" class="relative z-50 lg:hidden" @close="emit('changeSidebarState', false)">
+      <Dialog as="div" class="relative z-50 xl:hidden" @close="emit('changeSidebarState', false)">
         <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
           <div class="fixed inset-0 bg-gray-900/80" />
         </TransitionChild>
@@ -28,9 +28,9 @@
                 <li v-for="item in navigation" :key="item.name">
                   <Disclosure v-if="item.children" v-slot="{ open }">
                     <DisclosureButton
-                      :class="[item.current ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md leading-6 font-semibold w-full']"
+                      :class="[isCurrentRoute(item.href, item.children) ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md font-semibold w-full']"
                     >
-                      <component :is="item.icon" :class="[item.current ? 'text-gray-800' : 'text-gray-400', 'h-6 w-6 shrink-0']" aria-hidden="true" />
+                      <component :is="item.icon" :class="['text-gray-400', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                       <span>{{ item.name }}</span>
                       <ChevronDownIcon
                         :class="open ? 'rotate-180 transform' : ''"
@@ -47,13 +47,13 @@
                     >
                       <DisclosurePanel as="ul" class="text-md text-gray-500">
                         <li v-for="child in item.children" :key="child.name">
-                          <router-link :to="child.href" :class="[item.current ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 pl-11 text-md leading-6 font-semibold']">{{ child.name }}</router-link>
+                          <router-link :to="child.href" :class="[isCurrentRoute(child.href) ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 pl-11 text-md  font-semibold']">{{ child.name }}</router-link>
                         </li>
                       </DisclosurePanel>
                     </transition>
                   </Disclosure>
-                  <router-link v-else :to="item.href" :class="[item.current ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md leading-6 font-semibold']">
-                    <component :is="item.icon" :class="[item.current ? 'text-gray-800' : 'text-gray-400', 'h-6 w-6 shrink-0']" aria-hidden="true" />
+                  <router-link v-else :to="item.href" :class="[isCurrentRoute(item.href) ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-800 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md  font-semibold']">
+                    <component :is="item.icon" :class="['text-gray-400', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                     {{ item.name }}
                     <span v-if="item.notifications" class="ml-auto inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">{{ item.notifications }}</span>
                   </router-link>
@@ -61,7 +61,7 @@
               </ul>
             </li>
             <li class="mt-auto">
-              <router-link to="/login" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-md font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-gray-800">
+              <router-link to="/login" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-md font-semibold  text-gray-700 hover:bg-gray-50 hover:text-gray-800">
                 <ArrowRightOnRectangleIcon class="h-6 w-6 shrink-0 text-gray-400" aria-hidden="true" />
                 Log out
               </router-link>
@@ -76,7 +76,7 @@
     </TransitionRoot>
 
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <div class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
         <div class="flex h-16 shrink-0 items-center">
@@ -89,7 +89,7 @@
                 <li v-for="item in navigation" :key="item.name">
                   <Disclosure v-if="item.children" v-slot="{ open }">
                     <DisclosureButton
-                      :class="[item.current ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md leading-6 font-semibold w-full']"
+                      :class="[isCurrentRoute(item.href, item.children) ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md  font-semibold w-full']"
                     >
                       <component :is="item.icon" :class="['text-gray-500', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                       <span>{{ item.name }}</span>
@@ -108,12 +108,12 @@
                     >
                       <DisclosurePanel as="ul" class="text-md text-gray-500">
                         <li v-for="child in item.children" :key="child.name">
-                          <router-link :to="child.href" :class="[item.current ? 'bg-gray-50 text-gray-800' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 pl-11 text-md leading-6 font-semibold']">{{ child.name }}</router-link>
+                          <router-link :to="child.href" :class="[isCurrentRoute(child.href) ? 'bg-gray-50 text-gray-800' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 pl-11 text-md  font-semibold']">{{ child.name }}</router-link>
                         </li>
                       </DisclosurePanel>
                     </transition>
                   </Disclosure>
-                  <router-link v-else :to="item.href" :class="[item.current ? 'bg-gray-50 text-gray-900' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md leading-6 font-semibold']">
+                  <router-link v-else :to="item.href" :class="[isCurrentRoute(item.href) ? 'bg-gray-50 text-gray-900' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-md  font-semibold']">
                     <component :is="item.icon" :class="['text-gray-500', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                     {{ item.name }}
                     <span v-if="item.notifications" class="ml-auto inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">{{ item.notifications }}</span>
@@ -122,7 +122,7 @@
               </ul>
             </li>
             <li class="mt-auto">
-              <router-link to="/login" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-md font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-gray-800">
+              <router-link to="/login" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-md font-semibold  text-gray-700 hover:bg-gray-50 hover:text-gray-800">
                 <ArrowRightOnRectangleIcon class="h-6 w-6 shrink-0 text-gray-400" aria-hidden="true" />
                 Log out
               </router-link>
@@ -133,7 +133,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { toRef, watch } from 'vue'
+import { toRef, watch, computed } from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -153,13 +153,26 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ArrowRightOnRectangleIcon, ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { Navigation } from '@/interface/navigation'
+import router from '@/lib/router'
+
+const currentRoute = computed(() => {
+  return router.currentRoute.value.path?.toString().toLowerCase();
+});
+
+const isCurrentRoute = (route: string, children?: Navigation[]) => {
+  if (children) {
+    return children.filter(x => x.href.toLowerCase() == currentRoute.value).length > 0
+  } else {
+    return route.toLowerCase() == currentRoute.value;
+  }
+}
+
 
 const navigation : Navigation[] = [
   { 
     name: 'Dashboard', 
     href: '/dashboard', 
     icon: HomeIcon, 
-    current: true 
   },
   { 
     name: 'Tasks', 
@@ -168,52 +181,43 @@ const navigation : Navigation[] = [
     children: [
       {
         name: 'Studios',
-        href: '/dashboard', 
-        current: false,
+        href: '/', 
       },
       {
         name: 'Managers',
-        href: '/dashboard',
-        current: false,
+        href: '/',
       },
       {
         name: 'My Tasks',
         href: '/tasks',
-        current: false,
       },
     ],
-    current: false 
   },
   { 
     name: 'Messages', 
-    href: '/dashboard', 
+    href: '/', 
     icon: ChatBubbleLeftEllipsisIcon, 
-    current: false,
     notifications: 1,
   },
   { 
     name: 'Reports', 
-    href: '/dashboard', 
+    href: '/', 
     icon: ChartPieIcon,
     children: [
       {
         name: 'Studios',
-        href: '/dashboard', 
-        current: false,
+        href: '/', 
       },
       {
         name: 'Managers',
         href: '/reports/manager',
-        current: false,
       },
     ], 
-    current: false 
   },
   { 
     name: 'Team Management', 
-    href: '/dashboard', 
+    href: '/', 
     icon: UsersIcon, 
-    current: false 
   },
 ];
 
@@ -226,12 +230,23 @@ const props = defineProps({
 
 const emit = defineEmits(['changeSidebarState'])
 
+router.afterEach(() => {
+  emit('changeSidebarState', false)
+})
+
 watch(
   () => props.sidebarOpen,
   () => {
     sidebarOpen.value = props.sidebarOpen
   }
 )
+
+watch(
+  () => router.currentRoute.value,
+  () => {
+    console.log(currentRoute.value);
+  }
+) 
 
 const sidebarOpen = toRef(props.sidebarOpen)
 </script>
